@@ -30,3 +30,13 @@ RestartSec=5s
 [Install]
 # default
 WantedBy=multi-user.target
+
+
+
+#######################
+## SAVE and run 
+# sudo systemctl daemon-reload
+## now you can start, stop and check the status of the service with
+# sudo service airflow-scheduler /start/stop/status
+## you can also enable the service at startup
+# sudo systemctl enable airflow-scheduler.service
