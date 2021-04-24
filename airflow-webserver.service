@@ -16,15 +16,31 @@ Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
 # environment file needs to exist and be valid, you can add variables to it such as AIRFLOW_HOME
 # I followed Airflow instructions to "export AIRFLOW_HOME=~/airflow" for instance
 EnvironmentFile=/home/luca/airflow/airflow.env 
-User=airflow # this has to be a valid user, it will own the process
-Group=airflow # same as above, you can use an existing user or create the user airflow
+# this has to be a valid user, it will own the process
+User=airflow 
+# same as above, you can use an existing user or create the user airflow
+Group=airflow 
 Type=simple # default
 # enter the full path to airflow (which airflow to print it) and add any option, in my case i changed the port and -D to run in background
 ExecStart=/home/<MY_USER>/.local/bin/airflow webserver -p 8081 -D
-Restart=on-failure # default
-RestartSec=5s # defualt
-PrivateTmp=true # default
+# default
+Restart=on-failure
+# default
+RestartSec=5s
+# default
+PrivateTmp=true 
 
 [Install]
-WantedBy=multi-user.target # default
+# default
+WantedBy=multi-user.target
+
+
+#######################
+## SAVE and run 
+# sudo systemctl daemon-reload
+## now you can start, stop and check the status of the service with
+# sudo service airflow-webserver /start/stop/status
+## you can also enable the service at startup
+# sudo systemctl enable airflow-webserver.service
+
 
