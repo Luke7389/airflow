@@ -1,0 +1,32 @@
+# OFFICIAL EXAMPLE:
+# https://github.com/apache/airflow/blob/master/scripts/systemd/airflow-scheduler.service
+####################################
+# file needs to be created in 
+# /lib/systemd/system/airflow-scheduler.service                                                               
+####################################
+
+
+[Unit]
+Description=Airflow scheduler daemon
+After=network.target postgresql.service mysql.service redis.service rabbitmq-server.service
+Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
+
+[Service
+# environment file needs to exist and be valid, you can add variables to it such as AIRFLOW_HOME
+# I followed Airflow instructions to "export AIRFLOW_HOME=~/airflow" for instance
+EnvironmentFile=/home/luca/airflow/airflow.env
+# this has to be a valid user, it will own the process
+User=airflow 
+# same as above, you can use an existing user or create the user airflow
+Group=airflow
+Type=simple
+# enter the full path to airflow (which airflow to print it) and add any option, in my case -D to run in background
+ExecStart=/home/luca/.local/bin/airflow scheduler -D
+# default
+Restart=always
+# default
+RestartSec=5s
+
+[Install]
+# default
+WantedBy=multi-user.target
