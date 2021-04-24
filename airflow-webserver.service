@@ -1,0 +1,30 @@
+# OFFICIAL EXAMPLE:
+# https://github.com/apache/airflow/blob/master/scripts/systemd/airflow-webserver.service
+####################################
+# file needs to be created in 
+# /lib/systemd/system/airflow-webserver.service                                                               
+####################################
+
+
+# unit section is left as default
+[Unit]
+Description=Airflow webserver daemon
+After=network.target postgresql.service mysql.service redis.service rabbitmq-server.service
+Wants=postgresql.service mysql.service redis.service rabbitmq-server.service
+
+[Service]
+# environment file needs to exist and be valid, you can add variables to it such as AIRFLOW_HOME
+# I followed Airflow instructions to "export AIRFLOW_HOME=~/airflow" for instance
+EnvironmentFile=/home/luca/airflow/airflow.env 
+User=airflow # this has to be a valid user, it will own the process
+Group=airflow # same as above, you can use an existing user or create the user airflow
+Type=simple # default
+# enter the full path to airflow (which airflow to print it) and add any option, in my case i changed the port and -D to run in background
+ExecStart=/home/<MY_USER>/.local/bin/airflow webserver -p 8081 -D
+Restart=on-failure # default
+RestartSec=5s # defualt
+PrivateTmp=true # default
+
+[Install]
+WantedBy=multi-user.target # default
+
